@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.title }} | SZN Games</title>
+    <link rel="stylesheet" href="../static/css/gameInfo.css"/>
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+
+{% include 'header.html' %}
+
+<div class="section__game-details" style="background-image: url('{{ game.image_url }}')">
+    <div class="background-overlay"></div>
+    <div class="details-container">
+        <div class="game-title">
+            <h1>{{ game.title }}</h1>
+            <button class="buy-now-btn">BUY:</br>NZ${{ game.price }}</button>
+        </div>
+        <div class="game-details">
+            <span style="margin-bottom: 5px;"><b>Published by: </b>{{ game.publisher.publisher_name }}</span>
+            <span><b>Genres: </b>
+                {% for genre in game.genres %}
+                    {{ genre.genre_name }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                </span>
+            <span style="margin-top: 5px;"><b>Release date: </b>{{ game.release_date }}</span><br>
+        </div>
+    </div>
+</div>
+
+{% if game.trailer %}
+    <div class="section__game-trailer">
+        {% if '.mp4' in game.trailer %}
+            <video controls width="640" height="360">
+                <source src="{{ game.trailer }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% else %}
+            <img src="{{ game.trailer }}" alt="Game Screenshot" width="640">
+        {% endif %}
+    </div>
+{% endif %}
+
+<div class="section__game-information">
+    <div class="section__game-description">
+        <h2>Description</h2>
+        <div class="description-text-box">
+            <p>{{ game.description }}</p>
+        </div>
+    </div>
+
+    <div class="section__game-reviews">
+        <h2>Reviews</h2>
+        {% if game.reviews.__len__() > 0 %}
+            <div class="game-reviews">
+                {% for review in game.reviews %}
+                    <div class="review">
+                        <b>{{ review.user.username }}    </b>
+                        {% for i in range(review.rating) %}⭐{% endfor %}
+                        <br>{{ review.comment }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="game-reviews-none">
+                <p>This game has no reviews.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="section__recommended-games">
+    <h2>Similar games</h2>
+    <div class="recommended-games">
+        {% for i in range(game.recommended_games|length if game.recommended_games|length < 5 else 5) %}
+            <div class="rec-game">
+                <a href="/info/{{ game.recommended_games[i].game_id }}">
+                    <img src="{{ game.recommended_games[i].image_url }}"></a>
+                <br>
+                {{ game.recommended_games[i].title }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'sidebar.html' %}
+{% include 'footer.html' %}
+
+<script>
+    // set height up to a max of 260px (at which a 'Read more' button is added
+    const description = document.querySelector('.description-text-box');
+    if (description.scrollHeight > 260) {
+        const readMoreButton = document.createElement("button");
+        readMoreButton.textContent = "Read more";
+        readMoreButton.classList.add("read-more-btn");
+        readMoreButton.addEventListener("click", toggleGameDescription);
+        description.parentNode.insertBefore(readMoreButton, description.nextSibling);
+    } else {
+        description.style.height = '100%'
+    }
+
+    // shows or hides description when 'Read more' button clicked
+    function toggleGameDescription() {
+        const description = document.querySelector('.description-text-box');
+        const button = document.querySelector('.read-more-btn');
+        if (description.style.height != '100%') {
+            description.style.height = '100%';
+            button.innerHTML = 'Read less';
+        } else {
+            description.style.height = '260px';
+            button.innerHTML = 'Read more';
+        }
+    }
+</script>
+
+</body>
+</html>

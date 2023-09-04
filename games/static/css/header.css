@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 75px;
+    width: 100%;
+    background-color: #151517;
+    color: white;
+    font-family: sans-serif;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__navigation {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.logo {
+    height: 100%;
+    padding: 0 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    height: 65px;
+}
+
+.logo:hover {
+    background-color: #1a1b1e;
+}
+
+.navigation {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.navigation a {
+    text-decoration: none;
+}
+
+.nav-box {
+    width: 150px;
+    min-width: 150px;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.25;
+    color: white;
+}
+
+.nav-box:hover {
+    background-color: #1a1b1e;
+    cursor: pointer;
+    font-weight: 550;
+}
+
+.header__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 35px;
+}
+
+.header__user img {
+    margin-top: 3px;
+    height: 40px;
+    filter: brightness(0.8);
+}
+
+.header__user img:hover {
+    filter: brightness(1);
+}
+
+.sign-in-btn {
+    margin-right: 20px;
+    min-width: 75px;
+    padding: 11px 10px 9px;
+    font-size: 14px;
+    background-color: #008746;
+    color: white;
+    border-radius: 4px;
+    border: none;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.sign-in-btn:hover {
+    background-color: #04b358;
+    cursor: pointer;
+}

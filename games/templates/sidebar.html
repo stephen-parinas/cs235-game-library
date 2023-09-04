@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="../static/css/sidebar.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<div class="btn">
+    <span class="fas fa-bars"></span>
+</div>
+
+<nav class="sidebar">
+    <div class="text">Navigation</div>
+    <ul>
+        <li>
+            <form method="GET" action="{{ url_for('sidebar_bp.search') }}">
+                <div class="search-bar">
+                    <div class="search-dropdown">
+                        <select name="filter" class="search-filter">
+                            <option value="title">Title</option>
+                            <option value="genre">Genre</option>
+                            <option value="publisher">Publisher</option>
+                        </select>
+                    </div>
+                    <div class="search-text">
+                        <input type="text" name="query" placeholder="Search...">
+                    </div>
+                    <div class="search-button">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </li>
+
+        <li>
+            <a href="#" class="genre-btn">Genres
+                <span class="fas fa-caret-down first"></span>
+            </a>
+            <ul class="genre-show">
+                {% for key in genre_urls %}
+                    <li><a href="{{ genre_urls[key] }}">{{ key }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="pub-btn">Publishers
+                <span class="fas fa-caret-down second"></span>
+            </a>
+            <ul class="pub-show">
+                {% for key in publisher_urls %}
+                    <li><a href="{{ publisher_urls[key] }}">{{ key }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    $('.btn').click(function () {
+        $(this).toggleClass("click");
+        $('.sidebar').toggleClass("show");
+    })
+    $('.genre-btn').click(function () {
+        $('nav ul .genre-show').toggleClass("show")
+        $('nav ul .first').toggleClass("rotate")
+    });
+    $('.pub-btn').click(function () {
+        $('nav ul .pub-show').toggleClass("show1")
+        $('nav ul .second').toggleClass("rotate")
+    });
+    $('.tag-btn').click(function () {
+        $('nav ul .tag-show').toggleClass("show2")
+        $('nav ul .third').toggleClass("rotate")
+    });
+    $('nav ul li').click(function () {
+        $(this).addClass("active").siblings().removeClass("active");
+    });
+</script>
+
+</body>
+</html>

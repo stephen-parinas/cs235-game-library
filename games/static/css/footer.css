@@ -1,0 +1,18 @@
+footer {
+    text-align: center;
+    font-family: sans-serif;
+    background-color: #151517;
+    color: white;
+    padding: 10px 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer span {
+    font-size: 18px;
+}
+
+footer p {
+    text-align: center;
+    font-size: 15px;
+}

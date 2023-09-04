@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="../static/css/home.css"/>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+
+{% include 'header.html' %}
+
+<div class="row">
+    <div class="col">
+        <h1>SZN GAMES</h1>
+        <p>Our game library website offers a user-friendly platform for navigating a wide array of available games.
+            You will be able to view game details, ratings, and reviews, and find new games. Users can
+            discover and keep track of a variety of games, providing an engaging experience for all
+            gaming enthusiasts.</p>
+    </div>
+</div>
+
+<div class="row1">
+    <h2>Recently Added Games</h2>
+</div>
+
+<div class="game-grid1">
+    {% for game in recently_added_games %}
+        <div class="game">
+            <a href="/info/{{ game.game_id }}">
+                <img src="{{ game.image_url }}" title="{{ game.title }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="row2">
+    <h3>Popular Action Games</h3>
+</div>
+
+<div class="game-grid2">
+    {% for game in action_games %}
+        <div class="game1">
+            <a href="/info/{{ game.game_id }}">
+                <img src="{{ game.image_url }}" title="{{ game.title }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+{% include 'sidebar.html' %}
+{% include 'footer.html' %}
+
+</body>
+</html>

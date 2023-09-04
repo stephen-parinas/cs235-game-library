@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
+</head>
+<body>
+
+<header>
+    <div class="header__navigation">
+        <a href="{{ url_for('home_bp.home') }}">
+            <div class="logo">
+                <img src="../static/logo-transparent.png">
+            </div>
+        </a>
+        <nav class="navigation">
+            <a href="{{ url_for('allgames_bp.show_all_games') }}" class="nav-box">All games</a>
+            <a href="#" class="nav-box">Reviews</a>
+            <a href="#" class="nav-box">Wishlist</a>
+        </nav>
+    </div>
+
+    <div class="header__user">
+        <button class="sign-in-btn">SIGN IN</button>
+        <div class="profile-picture">
+            <a href="#"><img src="../static/pfp.png" alt="Profile Picture"></a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

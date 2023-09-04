@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | SZN Games</title>
+    <link rel="stylesheet" href="../static/css/allGames.css"/>
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+
+{% include 'header.html' %}
+
+<div>
+    <h1>{{ title }}</h1>
+</div>
+
+<div class="game-grid">
+    {% for game in list_of_games %}
+        <div class=“game”>
+            <a href="{{ url_for('info_bp.get_game_info', game_id=game.game_id) }}">
+                <img src="{{ game.image_url }}" title="{{ game.title }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>
+<br>
+
+<div class="pagination">
+    {% if "search" in request.url %}
+        {% if page > 1 %}
+            <a href="{{ url_for('sidebar_bp.search', page=1, query=search_query, filter=filter_criteria) }}">First</a>
+            <a href="{{ url_for('sidebar_bp.search', page=page-1, query=search_query, filter=filter_criteria) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page }}</span>
+        {% if (page * 16) < total_games %}
+            <a href="{{ url_for('sidebar_bp.search', page=page + 1, query=search_query, filter=filter_criteria) }}">Next</a>
+            <a href="{{ url_for('sidebar_bp.search', page=total_games / 16 + 1, query=search_query, filter=filter_criteria) }}">Last</a>
+        {% endif %}
+    {% elif "genre" in request.url %}
+        {% if page > 1 %}
+            <a href="{{ url_for('sidebar_bp.games_by_genre', genre=genre, page=1) }}">First</a>
+            <a href="{{ url_for('sidebar_bp.games_by_genre', genre=genre, page=page-1) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page }}</span>
+        {% if (page * 16) < total_games %}
+            <a href="{{ url_for('sidebar_bp.games_by_genre', genre=genre,page=page + 1) }}">Next</a>
+            <a href="{{ url_for('sidebar_bp.games_by_genre', genre=genre,page=total_games / 16 + 1) }}">Last</a>
+        {% endif %}
+    {% elif "publisher" in request.url %}
+        {% if page > 1 %}
+            <a href="{{ url_for('sidebar_bp.games_by_publisher', publisher=publisher,page=1) }}">First</a>
+            <a href="{{ url_for('sidebar_bp.games_by_publisher', publisher=publisher,page=page-1) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page }}</span>
+        {% if (page * 16) < total_games %}
+            <a href="{{ url_for('sidebar_bp.games_by_publisher', publisher=publisher,page=page + 1) }}">Next</a>
+            <a href="{{ url_for('sidebar_bp.games_by_publisher', publisher=publisher,page=total_games / 16 + 1) }}">Last</a>
+        {% endif %}
+    {% else %}
+        {% if page > 1 %}
+            <a href="{{ url_for('allgames_bp.show_all_games', page=1) }}">First</a>
+            <a href="{{ url_for('allgames_bp.show_all_games', page=page - 1) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page }}</span>
+        {% if (page * 16) < total_games %}
+            <a href="{{ url_for('allgames_bp.show_all_games', page=page + 1) }}">Next</a>
+            <a href="{{ url_for('allgames_bp.show_all_games', page=total_games / 16 + 1) }}">Last</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% include 'sidebar.html' %}
+{% include 'footer.html' %}
+
+</body>
+</html>
