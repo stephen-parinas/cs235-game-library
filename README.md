@@ -59,4 +59,15 @@ https://huggingface.co/datasets/FronkonGames/steam-games-dataset
 
 # Screenshots
 
-To be added.
+- App home page showing the most recent and most popular games. Sidebar contains the ability to search for games based on title, genre and publisher, as well as the ability to filter through games based on genre or publisher.
+<img src="/screenshots/homepage.png" alt= “homepage” width="700">
+<br>
+
+- Library displaying games in a card format. Pagination was implemented to only show up to 16 games on the page.
+<img src="/screenshots/library.png" alt= “library” width="700">
+<br>
+
+- Game info page. Includes a trailer (or screenshot if this is not available), description, reviews and recommended games based on common genres.
+<img src="/screenshots/library.png" alt= “library” width="700">
+<br>
+
