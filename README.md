@@ -68,6 +68,6 @@ https://huggingface.co/datasets/FronkonGames/steam-games-dataset
 <br>
 
 - Game info page. Includes a trailer (or screenshot if this is not available), description, reviews and recommended games based on common genres.
-<img src="/screenshots/library.png" alt= “library” width="700">
+<img src="/screenshots/gameinfo.png" alt= “gameinfo” width="700">
 <br>
 
