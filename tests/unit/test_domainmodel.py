@@ -1,7 +1,9 @@
+from datetime import datetime
+
 import pytest
 import os
 from games.domainmodel.model import Publisher, Genre, Game, Review, User, Wishlist
-from games.adapters.datareader.csvdatareader import GameFileCSVReader
+from games.adapters.csv_data_importer import GameFileCSVReader
 
 
 def test_publisher_init():
@@ -312,14 +314,14 @@ def test_user_add_remove_favourite_games():
 def test_user_add_remove_reviews():
     user = User("Shyamli", "pw12345")
     game = Game(1, "Domino Game")
-    review1 = Review(user, game, 3, "Great game!")
-    review2 = Review(user, game, 4, "Superb game!")
-    review3 = Review(user, game, 2, "Boring game!")
+    review1 = Review(user, game, 3, "Great game!", str(datetime.now()))
+    review2 = Review(user, game, 4, "Superb game!", str(datetime.now()))
+    review3 = Review(user, game, 2, "Boring game!", str(datetime.now()))
     assert len(user.reviews) == 0
     user.add_review(review1)
     user.add_review(review2)
     user.add_review(review3)
-    assert user.reviews == [review1, review2, review3]
+    assert user.reviews == [review3, review2, review1]
     user.add_review(review1)
     assert len(user.reviews) == 3
     user.add_review(300)
@@ -335,23 +337,23 @@ def test_user_add_remove_reviews():
 def test_review_initialization():
     user = User("Shyamli", "pw12345")
     game = Game(1, "Domino Game")
-    review = Review(user, game, 4, "Great game!")
+    review = Review(user, game, 4, "Great game!", str(datetime.now()))
     assert review.user == user
     assert review.game == game
     assert review.rating == 4
     assert review.comment == "Great game!"
 
     with pytest.raises(ValueError):
-        review2 = Review(user, game, 6, "Great game!")
+        review2 = Review(user, game, 6, "Great game!", str(datetime.now()))
 
 
 def test_review_eq():
     user = User("Shyamli", "pw12345")
     game = Game(1, "Domino Game")
-    review1 = Review(user, game, 4, "Great game!")
-    review2 = Review(user, game, 4, "Superb game!")
-    review3 = Review(user, game, 5, "Boring game!")
-    review4 = Review(user, game, 2, "Classic game!")
+    review1 = Review(user, game, 4, "Great game!", str(datetime.now()))
+    review2 = Review(user, game, 4, "Superb game!", str(datetime.now()))
+    review3 = Review(user, game, 5, "Boring game!", str(datetime.now()))
+    review4 = Review(user, game, 2, "Classic game!", str(datetime.now()))
     assert review1 == review1
     assert review1 != review3
     assert review1 != review4
@@ -420,7 +422,7 @@ def create_csv_reader():
     dir_name = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     games_file_name = os.path.join(dir_name, "games/adapters/data/games.csv")
     reader = GameFileCSVReader(games_file_name)
-    reader.read_csv_file()
+    reader.read_game_csv_file()
     return reader
 
 
@@ -431,7 +433,7 @@ def test_csv_reader():
     assert len(reader.dataset_of_genres) == 24
 
 
-def test_read_csv_file():
+def test_read_game_csv_file():
     reader = create_csv_reader()
     game = next(iter(reader.dataset_of_games))
     assert game.game_id == 7940

@@ -1,6 +1,6 @@
 import abc
 
-from games.domainmodel.model import Game, Genre, Publisher, Review
+from games.domainmodel.model import Game, Genre, Publisher, Review, User
 
 repo_instance = None
 
@@ -63,4 +63,31 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def search_games_by_publisher(self, search_query: str):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_review(self, review: Review):
+        if review.user is None or review not in review.user.reviews:
+            raise RepositoryException('Review not correctly attached to a User')
+        if review.game is None or review not in review.game.reviews:
+            raise RepositoryException('Review not correctly attached to an Game')
+
+    @abc.abstractmethod
+    def add_user(self, user: User):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_user(self, username: str):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_all_users(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update_game(self, game: Game):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update_user(self, user: User):
         raise NotImplementedError

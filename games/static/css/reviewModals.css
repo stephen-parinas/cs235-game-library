@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    color: white;
+}
+
+.review-form, .review-display {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: #151517;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.review-form {
+    height: 400px;
+}
+
+.modal-header {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-details {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-details img {
+    height: 100%;
+}
+
+.user-details span {
+    margin: 2px 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.close-form-btn, .close-display-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.close-form-btn span, .close-display-btn span {
+    font-size: 40px;
+    font-weight: bold;
+    color: lightgray;
+}
+
+.review-rating {
+    display: flex;
+    width: 125px;
+    flex-direction: row-reverse;
+    justify-content: left;
+    margin: 20px 0 5px;
+}
+
+.review-rating > input{
+    display:none;
+}
+
+.review-rating label {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+.review-rating label::before{
+    content: "★";
+    color: gold;
+    position: absolute;
+    opacity: 0;
+}
+
+.review-rating label:hover:before,
+.review-rating label:hover ~ label:before {
+    opacity: 1 !important;
+    color: gold;
+}
+
+.review-rating input[type="radio"]:checked ~ label:before {
+    opacity: 1;
+}
+
+.review-rating:hover input[type="radio"]:checked ~ label:before{
+    opacity: 0;
+}
+
+.review-comment {
+    height: 200px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+}
+
+.review-comment textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+    background-color: #1a1b1e;
+    caret-color: white;
+    color: white;
+}
+
+.form-error-message {
+    display: none;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.form-error-message p {
+    font-size: 14px;
+    color: lightcoral;
+}
+
+.form-btns {
+    margin-top: 20px;
+}
+
+.form-btns input {
+    padding: 5px 7px 3px;
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.form-btns input:hover {
+    cursor: pointer;
+}
+
+.reviews-header {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.reviews-header h2 {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.all-game-reviews {
+    max-height: 450px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    overflow: auto;
+}
+
+.all-game-reviews p {
+    margin-bottom: 10px;
+}
+
+.all-game-reviews::-webkit-scrollbar {
+    width: 10px;
+}
+
+.all-game-reviews::-webkit-scrollbar-track {
+    background: #151517;
+}
+
+.all-game-reviews::-webkit-scrollbar-thumb {
+    background: #666;
+}
+
+.all-game-reviews .review {
+    background-color: #2a2b2e;
+    padding: 10px;
+    line-height: 1.25;
+}
+
+.all-game-reviews .review:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.average-rating {
+    margin: 20px 0;
+}

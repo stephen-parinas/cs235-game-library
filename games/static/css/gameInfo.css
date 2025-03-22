@@ -18,6 +18,17 @@ h2 {
     padding: 0;
 }
 
+.form-modal-background-overlay, .display-modal-background-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
 .section__game-details {
     height: 250px;
     color: #ededed;
@@ -30,7 +41,7 @@ h2 {
     position: absolute;
     width: 100%;
     height: 250px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
     mix-blend-mode: multiply;
 }
 
@@ -44,21 +55,40 @@ h2 {
     align-items: center;
 }
 
-.buy-now-btn {
-    margin-top: 20px;
+.game-title h1 {
+    margin-bottom: 15px;
+}
+
+.game-title button, .game-title a {
+    width: auto;
     padding: 10px 10px 8px;
     font-size: 14px;
-    background-color: dodgerblue;
-    color: white;
+    color: black;
     border-radius: 4px;
     border: none;
     text-align: left;
     line-height: 1.25;
+    font-weight: bold;
+    filter: brightness(90%);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+    text-decoration: none;
 }
 
-.buy-now-btn:hover {
-    background-color: deepskyblue;
+.game-title button:hover, .game-title a:hover {
+    filter: brightness(100%);
     cursor: pointer;
+}
+
+.buy-now-btn {
+    background-color: skyblue;
+}
+
+.add-to-favourite-btn {
+    background-color: lightpink;
+}
+
+.favourite-btn {
+    background-color: lightcoral;
 }
 
 .game-details {
@@ -101,10 +131,17 @@ h2 {
     line-height: 1.25;
 }
 
-.read-more-btn {
-    padding: 5px 10px;
+.section__game-information button {
+    padding: 7px 10px 5px;
     font-size: 14px;
     color: black;
+    font-weight: bold;
+    margin-right: 5px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+}
+
+.section__game-information button:hover {
+    cursor: pointer;
 }
 
 .section__game-reviews {
@@ -112,18 +149,22 @@ h2 {
     margin: 20px 30px;
 }
 
-.game-reviews, .game-reviews-none {
-    margin-top: 15px;
+.game-reviews {
+    margin: 15px 0;
     max-height: 260px;
     overflow: auto;
 }
 
-.review {
-    border: 2px black solid;
+.game-reviews p {
+    margin-bottom: 10px;
+}
+
+.game-reviews .review {
     background-color: #2a2b2e;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     line-height: 1.25;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4);
 }
 
 .section__recommended-games {
@@ -151,10 +192,18 @@ h2 {
     border-radius: 3px;
     opacity: 0.8;
     transition: opacity 0.3s ease;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4);
 }
 
 .rec-game img:hover {
     height: 120px;
     border-radius: 3px;
     opacity: 1;
+}
+
+.review-form, .review-display {
+    display: none;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 
 import games.adapters.repository as repo
 import games.allgames.services as services
@@ -18,6 +18,8 @@ def show_all_games(page):
 
     genre_urls = sidebar_services.get_genres_and_urls(repo.repo_instance)
     publisher_urls = sidebar_services.get_publishers_and_urls(repo.repo_instance)
+
+    user = session.get('user_name')
     
     return render_template('allGames.html', title="Browse All Games", list_of_games=visible_games,page=page,
-                           total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls)
+                           total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls, user=user)

@@ -1,4 +1,6 @@
+from bisect import insort_left
 from datetime import datetime
+from typing import List
 
 
 class Publisher:
@@ -42,10 +44,12 @@ class Genre:
             self.__genre_name = None
         else:
             self.__genre_name = genre_name.strip()
+        self.__tagged_articles: List[Game] = list()
 
     @property
     def genre_name(self) -> str:
         return self.__genre_name
+
 
     def __repr__(self) -> str:
         return f'<Genre {self.__genre_name}>'
@@ -62,6 +66,9 @@ class Genre:
 
     def __hash__(self):
         return hash(self.__genre_name)
+
+    def add_game(self, game):
+        pass
 
 
 class Game:
@@ -83,6 +90,7 @@ class Game:
         self.__recommended_games: list = []
         self.__genres: list = []
         self.__reviews: list = []
+        self.__average_rating = None
         self.__publisher = None
         self.__trailer_url = None
 
@@ -171,11 +179,11 @@ class Game:
             self.__website_url = website_url
         else:
             self.__website_url = None
-    
+
     @property
     def trailer_url(self):
         return self.__trailer_url
-    
+
     @trailer_url.setter
     def trailer_url(self, trailer_url: str):
         if isinstance(trailer_url, str) and trailer_url.strip() != "":
@@ -186,6 +194,12 @@ class Game:
     @property
     def reviews(self) -> list:
         return self.__reviews
+
+    @property
+    def average_rating(self) -> float:
+        if self.__average_rating is None:
+            self.__average_rating = 0.0
+        return self.__average_rating
 
     @property
     def recommended_games(self) -> list:
@@ -208,6 +222,29 @@ class Game:
         except ValueError:
             print(f"Could not find {genre} in list of genres.")
             pass
+
+    def add_review(self, review):
+        if not isinstance(review, Review) or review in self.__reviews:
+            return
+        insort_left(self.__reviews, review)
+
+    def remove_review(self, review):
+        if not isinstance(review, Review) or review not in self.__reviews:
+            return
+        self.__reviews.remove(review)
+
+    def update_average_rating(self) -> float:
+        if len(self.__reviews) == 0:
+            return 0
+        total_rating = 0
+        for review in self.__reviews:
+            total_rating += review.rating
+        self.__average_rating = total_rating / len(self.__reviews)
+
+    def add_recommended_game(self, game):
+        if not isinstance(game, Game) or game in self.__recommended_games:
+            return
+        self.__recommended_games.append(game)
 
     def __repr__(self):
         return f"<Game {self.__game_id}, {self.__game_title}>"
@@ -256,7 +293,7 @@ class User:
     def add_review(self, new_review):
         if not isinstance(new_review, Review) or new_review in self.__reviews:
             return
-        self.__reviews.append(new_review)
+        insort_left(self.__reviews, new_review)
 
     def remove_review(self, review):
         if not isinstance(review, Review) or review not in self.__reviews:
@@ -295,7 +332,7 @@ class User:
 
 
 class Review:
-    def __init__(self, user: User, game: Game, rating: int, comment: str):
+    def __init__(self, user: User, game: Game, rating: int, comment: str, date: str):
 
         if not isinstance(user, User):
             raise ValueError("User must be an instance of User class")
@@ -312,6 +349,10 @@ class Review:
         if not isinstance(comment, str):
             raise ValueError("Comment must be a string")
         self.__comment = comment.strip()
+
+        if not isinstance(date, str):
+            raise ValueError("Invalid date")
+        self.__date = date.strip()
 
     @property
     def game(self) -> Game:
@@ -343,6 +384,10 @@ class Review:
         else:
             raise ValueError("Rating must be an integer between 0 and 5")
 
+    @property
+    def date(self):
+        return self.__date
+
     def __repr__(self):
         return f"Review(User: {self.__user}, Game: {self.__game}, " \
                f"Rating: {self.__rating}, Comment: {self.__comment})"
@@ -351,6 +396,11 @@ class Review:
         if not isinstance(other, self.__class__):
             return False
         return other.user == self.__user and other.game == self.__game and other.comment == self.__comment
+
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__date > other.date
 
 
 class Wishlist:
@@ -399,3 +449,23 @@ class Wishlist:
         else:
             self.__current += 1
             return self.__list_of_games[self.__current - 1]
+
+
+class ModelException(Exception):
+    pass
+
+
+def make_tag_association(game: Game, genre: Genre):
+    if genre.is_applied_to(game):
+        raise ModelException(f'Tag {genre.genre_name} already applied to Game "{game.title}"')
+
+    game.add_genre(genre)
+    genre.add_game(game)
+
+
+def make_review(review_text: str, user: User, game: Game, timestamp: datetime = datetime.today()):
+    comment = Review(user, game, review_text, timestamp)
+    user.add_review(comment)
+    game.add_review(comment)
+
+    return comment

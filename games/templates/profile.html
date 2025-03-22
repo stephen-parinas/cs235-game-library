@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{username}}'s Profile | SZN Games</title>
+    <link rel="stylesheet" href="../static/css/profile.css" />
+</head>
+ 
+<body>
+{% include 'utilities/header.html' %}
+<div class="user_details">
+    <div class="user_pfp">
+        <img src="../../static/pfp.png" alt="Profile Picture">
+    </div>
+    <div class="username">
+        {{username}}'s Profile
+    </div>
+</div>
+<div class="section__favourites_activity">
+    <div class="scroll-box" id="favourites">
+        <h4>Favourites</h4>
+        <hr>
+        <div class="content-container">
+            {% for game in favourite_games %}
+            <div class=“game”>
+                <a href="{{ url_for('info_bp.get_game_info', game_id=game.game_id) }}">
+                <img src="{{ game.image_url }}" title="{{ game.title }}">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="scroll-box" id="activity">
+        <h4>Activity</h4>
+        <hr>
+        <div class="content-container">
+            {% for review in user_reviews %}
+            <div class=“review”>
+                <div class="review-image">
+                    <a href="{{ url_for('info_bp.get_game_info', game_id=review.game.game_id) }}">
+                        <img src="{{ review.game.image_url }}" title="{{ review.game.title }}">
+                        </a>
+                </div>
+                <div class="review-text">
+                    <p>{% for i in range(review.rating) %}⭐{% endfor %}</p>
+                    <br>
+                    <p>{{ review.comment }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'utilities/sidebar.html' %}
+{% include 'utilities/footer.html' %}
+</body>
+</html>

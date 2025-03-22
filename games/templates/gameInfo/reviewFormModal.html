@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/reviewModals.css">
+</head>
+<body>
+<form class="review-form" method="POST" action="{{ url_for('reviews_bp.add_review') }}">
+    {{ form.hidden_tag() }}
+    <div class="modal-header">
+        <div class="user-details">
+            <img src="../../static/pfp.png" alt="Profile Picture">
+            <span>{{ user }}</span>
+        </div>
+        <div class="close-form-btn">
+            <span>×</span>
+        </div>
+    </div>
+
+    {{ form.username }}
+    {{ form.game_id }}
+
+    <div class="review-rating">
+        {% for star in form.rating %}
+            <input type="radio" id="{{ star.id }}" name="rating" value="{{ star.data }}">
+            <label for="{{ star.id }}">{{ star.label }}</label>
+        {% endfor %}
+    </div>
+
+    <div class="review-comment">
+        {{ form.comment }}
+    </div>
+
+    <div class="form-error-message">
+        <p>Please add both a rating and a comment.</p>
+    </div>
+
+    <div class="form-btns">
+        {{ form.submit }}
+        <input type="reset" value="Reset">
+    </div>
+</form>
+<script src="../../static/gameInfo.js"></script>
+</body>
+</html>

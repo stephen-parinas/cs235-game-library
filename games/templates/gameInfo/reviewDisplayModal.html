@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/reviewModals.css">
+</head>
+<body>
+<div class="review-display">
+    <div class="modal-header">
+        <div class="reviews-header">
+            <h2>Reviews</h2>
+        </div>
+        <div class="close-display-btn">
+            <span>×</span>
+        </div>
+    </div>
+    <div class="average-rating">
+        {% if game.reviews.__len__() == 1 %}
+            <p>Average rating: {{ "%.1f"|format(game.average_rating) }}⭐ (1 review).</p>
+        {% else %}
+            <p>Average rating: {{ "%.1f"|format(game.average_rating) }}⭐ ({{ game.reviews.__len__() }} reviews, newest first).</p>
+        {% endif %}
+    </div>
+    <div class="all-game-reviews">
+        {% for i in range(game.reviews|length - 1, -1, -1) %}
+            <div class="review">
+                <b>{{ game.reviews[i].user.username }}    </b>
+                {% for i in range(game.reviews[i].rating) %}⭐{% endfor %}
+                <br>{{ game.reviews[i].comment }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

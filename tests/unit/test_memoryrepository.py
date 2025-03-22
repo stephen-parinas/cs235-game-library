@@ -1,11 +1,16 @@
+import random
+import uuid
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
 import pytest
 
-from games.adapters.memory_repository import MemoryRepository, populate
-from games.domainmodel.model import Game, Publisher, Genre
+from games.adapters.memory_repository import MemoryRepository
+from games.adapters.repository_populate import populate
+from games.authentication.services import add_user
+from games.domainmodel.model import Game, Publisher, Genre, User, Review
+
 
 
 def test_add_game():
@@ -352,3 +357,118 @@ def test_search_games_by_publisher():
     # test a search string that will not return any game
     games = test_repo.search_games_by_publisher("abcdefghijklmnopqrstuvwxyz")
     assert len(games) == 0
+
+
+def test_add_review():
+    test_repo = MemoryRepository()
+    test_path = Path.cwd() / 'games' / 'adapters' / 'data'
+    populate(test_path, test_repo)
+
+    user1 = User("baekhyunbyun", "Passw0rd")
+    test_repo.add_user(user1)
+
+    user = test_repo.get_user("baekhyunbyun")
+    game = test_repo.get_game(316260)
+    rating = random.randint(1, 5)
+    comment = (str(uuid.uuid4()))[0:100]
+    current_datetime = str(datetime.now())
+
+    user_review_count = len(user.reviews) + 1
+    game_review_count = len(game.reviews) + 1
+
+    # add a valid review, check it is present in both the User and Game objects
+    review = Review(user, game, rating, comment, current_datetime)
+    test_repo.add_review(review)
+    assert len(user.reviews) == user_review_count
+    assert len(game.reviews) == game_review_count
+    assert review in user.reviews
+    assert review in game.reviews
+
+    # attempt to add a review that already is present in either object
+    test_repo.add_review(review)
+    assert len(user.reviews) == user_review_count
+    assert len(game.reviews) == game_review_count
+
+    # test invalid inputs
+    not_review = 'user'
+    test_repo.add_review(not_review)
+    assert not_review not in user.reviews
+    assert not_review not in game.reviews
+
+
+def test_add_user():
+    # add one User, test length and that correct one is added
+    test_repo = MemoryRepository()
+    user1 = User("user2", "Passw0rd")
+    test_repo.add_user(user1)
+    users = test_repo.get_all_users()
+    assert len(users) == 1
+    assert users[0] == user1
+
+    # add more users, test length and that list is sorted by username
+    user2 = User("user1", "Passw0rd")
+    user3 = User("user3", "Passw0rd")
+    test_repo.add_user(user2)
+    test_repo.add_user(user3)
+    users = test_repo.get_all_users()
+    assert len(users) == 3
+    assert users[0] == user2
+    assert users[1] == user1
+    assert users[2] == user3
+
+    # add a non-User object, test that it is not added
+    not_user = 'user'
+    test_repo.add_user(not_user)
+    users = test_repo.get_all_users()
+    assert len(users) == 3
+
+    # test that it doesn't add an already existing user
+    user_repeat = User("user1", "Passw0rd")
+    test_repo.add_user(user_repeat)
+    users = test_repo.get_all_users()
+    assert len(users) == 3
+
+
+def test_get_user():
+    # get a user that exists in the repo
+    test_repo = MemoryRepository()
+    user1 = User("user01", "Passw0rd")
+    test_repo.add_user(user1)
+    test_user = test_repo.get_user("user01")
+    assert test_user == user1
+
+    # test for a user that exists but is not in the repo
+    user2 = User("user02", "Passw0rd")
+    test_user = test_repo.get_user("user02")
+    assert test_user is None
+
+    # test for a user that does not exist
+    test_user = test_repo.get_user("user03")
+    assert test_user is None
+
+
+def test_get_all_users():
+    # test if there are no users
+    test_repo = MemoryRepository()
+    users = test_repo.get_all_users()
+    assert len(users) == 0
+
+    # test if there is one user
+    user1 = User("userone", "Passw0rd")
+    test_repo.add_user(user1)
+    users = test_repo.get_all_users()
+    assert len(users) == 1
+
+    # test if there are multiple users
+    user2 = User("usertwo", "Passw0rd")
+    user3 = User("userthree", "Passw0rd")
+    test_repo.add_user(user2)
+    test_repo.add_user(user3)
+    users = test_repo.get_all_users()
+    assert len(users) == 3
+
+    # test that it doesn't retrieve a user that isn't in the list
+    user4 = User("userfour", "Passw0rd")
+    users = test_repo.get_all_users()
+    assert len(users) == 3
+    assert user4 not in users

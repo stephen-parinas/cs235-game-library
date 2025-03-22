@@ -8,20 +8,13 @@ from games.adapters.repository import AbstractRepository
 def get_game_by_id(repo: AbstractRepository, game_id: int):
     game = repo.get_game(game_id)
     if game:
-        game_dict = {
-            'game_id': game.game_id,
-            'title': game.title,
-            'price': game.price,
-            'publisher': game.publisher,
-            'genres': game.genres,
-            'release_date': game.release_date,
-            'description': game.description,
-            'image_url': game.image_url,
-            'trailer': game.trailer_url,
-            'reviews': game.reviews,
-            'recommended_games': get_recommended_games(repo, game.genres, game)
-        }
-        return game_dict
+        if len(game.recommended_games) == 0:
+            recommended_games = get_recommended_games(repo, game.genres, game)
+            recommended_games = repo.sort_games_by_date(recommended_games)
+            for g in recommended_games:
+                game.add_recommended_game(g)
+            repo.update_game(game)
+        return game
     else:
         return None
 

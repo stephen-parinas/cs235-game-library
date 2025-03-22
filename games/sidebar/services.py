@@ -34,6 +34,7 @@ def get_genres_and_urls(repo: AbstractRepository):
     genre_urls = dict()
     for genre_name in genre_names:
         genre_urls[genre_name] = f"http://127.0.0.1:5000/games_by_genre?genre={quote(genre_name)}"
+    genre_urls = {key: genre_urls[key] for key in sorted(genre_urls)}
     return genre_urls
 
 
@@ -43,12 +44,13 @@ def get_publishers_and_urls(repo: AbstractRepository):
     publisher_urls = dict()
     for publisher_name in publisher_names:
         publisher_urls[publisher_name] = f"http://127.0.0.1:5000/games_by_publisher?publisher={quote(publisher_name)}"
+    publisher_urls = {key: publisher_urls[key] for key in sorted(publisher_urls)}
     return publisher_urls
 
 
 def game_by_genre(repo: AbstractRepository, target_genre: str):
-    return repo.get_game_by_genre(Genre(target_genre))
+    return repo.sort_games_by_date(repo.get_game_by_genre(Genre(target_genre)))
 
 
 def game_by_publisher(repo: AbstractRepository, target_publisher: str):
-    return repo.get_game_by_publisher(Publisher(target_publisher))
+    return repo.sort_games_by_date(repo.get_game_by_publisher(Publisher(target_publisher)))

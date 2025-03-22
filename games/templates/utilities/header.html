@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/header.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+<header>
+    <div class="header__navigation">
+        <a href="{{ url_for('home_bp.home') }}">
+            <div class="logo">
+                <img src="../../static/logo-transparent.png">
+            </div>
+        </a>
+        <nav class="navigation">
+            <a href="{{ url_for('allgames_bp.show_all_games') }}" class="nav-box">All Games</a>
+            <a href="#" class="nav-box">Reviews</a>
+            <a href="#" class="nav-box">Wishlist</a>
+        </nav>
+    </div>
+
+    <div class="header__user">
+        {% if user is none %}
+            <form action="{{ url_for('authentication_bp.login') }}" method="get">
+                <button type="submit" class="sign-in-btn">SIGN IN</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('authentication_bp.logout') }}" method="get">
+                <button type="submit" class="sign-in-btn">SIGN OUT</button>
+            </form>
+            <div class="profile-picture">
+                <a href="{{ url_for('user_profile_bp.show_profile') }}"><img src="../../static/pfp.png" alt="Profile Picture"></a>
+            </div>
+        {% endif %}
+    </div>
+</header>
+
+
+</body>
+</html>

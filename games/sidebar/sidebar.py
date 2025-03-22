@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from games.sidebar import services
 
 import games.adapters.repository as repo
@@ -31,10 +31,12 @@ def search(page, search_query="", filter_criteria="title"):
     genre_urls = services.get_genres_and_urls(repo.repo_instance)
     publisher_urls = services.get_publishers_and_urls(repo.repo_instance)
 
+    user = session.get('user_name')
+
     return render_template('allGames.html', title=f"Search results for: {search_query}",
                            search_query=search_query, filter_criteria=filter_criteria,
                            list_of_games=visible_games, page=page, total_games=total_games,
-                           genre_urls=genre_urls, publisher_urls=publisher_urls)
+                           genre_urls=genre_urls, publisher_urls=publisher_urls, user=user)
 
 
 @sidebar_blueprint.route('/games_by_genre/<int:page>')
@@ -49,8 +51,10 @@ def games_by_genre(page):
     genre_urls = services.get_genres_and_urls(repo.repo_instance)
     publisher_urls = services.get_publishers_and_urls(repo.repo_instance)
 
+    user = session.get('user_name')
+
     return render_template('allGames.html', title=genre, genre=genre, list_of_games=visible_games, page=page,
-                           total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls)
+                           total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls, user=user)
 
 
 @sidebar_blueprint.route('/games_by_publisher/<int:page>')
@@ -65,6 +69,8 @@ def games_by_publisher(page):
     genre_urls = services.get_genres_and_urls(repo.repo_instance)
     publisher_urls = services.get_publishers_and_urls(repo.repo_instance)
 
-    return render_template('allGames.html', title=publisher, publisher=publisher, list_of_games=visible_games,
-                           page=page, total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls)
+    user = session.get('user_name')
+
+    return render_template('allGames.html', title=publisher, publisher=publisher, list_of_games=visible_games, page=page,
+                           total_games=total_games, genre_urls=genre_urls, publisher_urls=publisher_urls, user=user)
 

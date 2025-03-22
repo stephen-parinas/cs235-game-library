@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="../../static/css/register.css"/>
+    <link rel="icon" href="../../static/favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+{% include 'utilities/header.html' %}
+<div class="hero">
+    <div class="form-box">
+        <div class="button-box">
+            <div id="btn" style="left: 0"></div>
+            <div class="buttons">
+                <a class="toggle-btn" href="#">Login</a>
+                <a class="toggle-btn" href="{{ url_for('authentication_bp.register') }}">Register</a>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login" class="input-group" method="POST" action="{{ url_for('authentication_bp.login') }}">
+            {{ form.hidden_tag() }}
+            <h1>Log in to SZN Games</h1>
+
+            {{ form.user_name(class="input-field", placeholder="Username", required="required") }}
+
+            {{ form.password(class="input-field", placeholder="Enter password", required="required") }}
+
+            {% if user_name_error_message %}
+                <p class="error">{{ user_name_error_message }}</p>
+            {% endif %}
+
+            {% if password_error_message %}
+                <p class="error">{{ password_error_message }}</p>
+            {% endif %}
+
+            {% if form.user_name.errors is not none %}
+                {% for error in form.user_name.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.password.errors is not none %}
+                {% for error in form.password.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <button type="submit" class="submit-btn">Log in</button>
+        </form>
+    </div>
+</div>
+{% include 'utilities/footer.html' %}
+
+<script>
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+    var z = document.getElementById("btn");
+
+    function register() {
+        x.style.left = "-400px";
+        y.style.left = "50px";
+        z.style.left = "110px";
+    }
+
+    function login() {
+        x.style.left = "50px";
+        y.style.left = "450px";
+        z.style.left = "0px";
+    }
+</script>
+</body>
+</html>
